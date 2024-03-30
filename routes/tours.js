@@ -34,5 +34,4 @@ router.get("/", getAllTour);
 router.get("/search/getTourBySearch", getTourBySearch);
 router.get("/search/getFeaturedTours", getFeaturedTour);
 router.get("/search/getTourCount", getTourCount);
-
 export default router;

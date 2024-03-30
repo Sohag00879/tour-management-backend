@@ -24,6 +24,10 @@ const bookingSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    roomCategory: {
+      type: String,
+      required: true,
+    },
     phone: {
       type: Number,
       required: true,
@@ -34,7 +38,22 @@ const bookingSchema = new mongoose.Schema(
     },
     bookAt: {
       type: Date,
-      required: true,
+      // required: true,
+    },
+    endDate: {
+      type: Date,
+    },
+    status: {
+      type: String,
+      enum: ["active", "cancelled", "pending", "rejected"],
+      default: "pending",
+    },
+    cancellation: {
+      status: {
+        type: String,
+        enum: ["pending", "confirmed", "cancelled", "no action"],
+        default: "no action",
+      },
     },
   },
   { timestamps: true }

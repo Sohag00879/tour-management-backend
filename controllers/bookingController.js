@@ -36,11 +36,28 @@ export const getBooking = async (req, res) => {
     });
   }
 };
+export const getOneBooking = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const book = await Booking.findById(id);
+
+    res.status(200).json({
+      success: true,
+      message: "Successfully fetched  booking",
+      data: book,
+    });
+  } catch (err) {
+    res.status(404).json({
+      success: false,
+      message: "Not Found",
+    });
+  }
+};
 
 // get all booking
 export const getAllBooking = async (req, res) => {
   try {
-    const books = await Booking.find();
+    const books = await Booking.find({ status: "active" });
 
     res.status(200).json({
       success: true,
@@ -73,21 +90,63 @@ export const getTourBooking = async (req, res) => {
   }
 };
 
+//get booking by pending
+export const getTourBookingPending = async (req, res) => {
+  try {
+    const books = await Booking.find({ status: "pending" });
+    res.status(200).json({
+      success: true,
+      message: "Successfully fetched  booking",
+      data: books,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "internal server error",
+    });
+  }
+};
+
+//get booking by rejected
+export const getTourBookingRejected = async (req, res) => {
+  try {
+    const books = await Booking.find({ status: "rejected" });
+    res.status(200).json({
+      success: true,
+      message: "Successfully fetched  booking",
+      data: books,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "internal server error",
+    });
+  }
+};
+
+//get booking by cancelled
+export const getTourBookingCancelled = async (req, res) => {
+  try {
+    const books = await Booking.find({ status: "cancelled" });
+    res.status(200).json({
+      success: true,
+      message: "Successfully fetched  booking",
+      data: books,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "internal server error",
+    });
+  }
+};
+
 //cancelletion request
 
-export const tourCancellationRequest = async (req, res) => {
+export const cancellationRequest = async (req, res) => {
   const bookingId = req.params.id;
   try {
-    const updatedBooking = await Booking.findByIdAndUpdate(
-      bookingId,
-      {
-        $set: {
-          "cancellation.status": "pending",
-          "cancellation.requestedBy": req.user._id,
-        },
-      },
-      { new: true }
-    );
+    const updatedBooking = await Booking.findByIdAndUpdate(bookingId, req.body);
     res.status(200).json({
       success: true,
       message: "Cancellation requested successfully",
@@ -103,33 +162,12 @@ export const tourCancellationRequest = async (req, res) => {
 
 // Admin Confirm/Reject Cancellation
 export const confirmCancellation = async (req, res) => {
-  const bookingId = req.params.id;
   try {
-    const { bookingId } = req.params;
-    const { action } = req.body;
-
-    const updateFields =
-      action === "confirm"
-        ? {
-            "cancellation.status": "confirmed",
-            "cancellation.confirmedBy": req.user._id,
-          }
-        : {
-            "cancellation.status": "cancelled",
-            "cancellation.confirmedBy": req.user._id,
-          };
-
-    const updatedBooking = await Booking.findByIdAndUpdate(
-      bookingId,
-      { $set: updateFields },
-      { new: true }
-    );
-
+    const bookingId = req.params.id;
+    const updatedBooking = await Booking.findByIdAndUpdate(bookingId, req.body);
     res.status(200).json({
       success: true,
-      message: `Cancellation ${
-        action === "confirm" ? "confirmed" : "rejected"
-      } successfully`,
+      message: "Successful",
       data: updatedBooking,
     });
   } catch (err) {

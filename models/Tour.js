@@ -27,6 +27,12 @@ const tourSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    tourStartDate: {
+      type: Date,
+    },
+    tourDays: {
+      type: Number,
+    },
     price: {
       type: Number,
       required: true,
@@ -68,7 +74,29 @@ const tourSchema = new mongoose.Schema(
     endDate: {
       type: Date,
     },
-
+    busName: {
+      type: String,
+    },
+    busPhoto: {
+      type: String,
+    },
+    busStartLocation: {
+      type: String,
+    },
+    busStartDate: {
+      type: Date,
+    },
+    busDescription: {
+      type: String,
+    },
+    // breakFast: [String],
+    breakFast: {
+      type: [String],
+    },
+    lunch: {
+      type: [String],
+    },
+    dinner: [String],
     reviews: [
       {
         type: mongoose.Types.ObjectId,

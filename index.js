@@ -23,7 +23,7 @@ const connect = async () => {
     });
     console.log("MongoDB database connected");
   } catch (err) {
-    console.log("MongoDb database connection failed");
+    console.log("MongoDb database connection failed", err);
   }
 };
 
@@ -42,6 +42,7 @@ app.use("/api/v1/tours", tourRoute);
 app.use("/api/v1/users", userRoute);
 app.use("/api/v1/review", reviewRoute);
 app.use("/api/v1/booking", bookingRoute);
+app.use("/api/v1/blogs", blogsRoute);
 app.use("/api/v1/blogs", blogsRoute);
 app.listen(port, () => {
   connect();
